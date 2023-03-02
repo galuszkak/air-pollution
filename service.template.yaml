@@ -17,7 +17,7 @@ spec:
         - name: INSTANCE_UNIX_SOCKET
           valueFrom:
             secretKeyRef:
-              key: '1'
+              key: '2'
               name: cloudsql_socket
         - name: INSTANCE_CONNECTION_NAME
           valueFrom:
