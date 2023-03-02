@@ -8,7 +8,7 @@ spec:
       annotations:
         autoscaling.knative.dev/maxScale: '1'
         autoscaling.knative.dev/minScale: '1'
-        run.googleapis.com/cpu-throttling: false
+        run.googleapis.com/cpu-throttling: 'false'
     spec:
       containerConcurrency: 100
       containers:
