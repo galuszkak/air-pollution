@@ -21,8 +21,6 @@ import { HttpModule } from '@nestjs/axios';
 
         let options: TypeOrmModuleOptions = {
           type: 'postgres',
-          host: configService.get('DB_HOST'),
-          port: +configService.get('POSTGRES_PORT'),
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DB'),
@@ -34,6 +32,11 @@ import { HttpModule } from '@nestjs/axios';
             extra: {
               socketPath: configService.get('INSTANCE_UNIX_SOCKET')
             }
+          })
+        } else {
+          options = Object.assign(options, {
+            host: configService.get('DB_HOST'),
+            port: +configService.get('POSTGRES_PORT')
           })
         }
         return options
