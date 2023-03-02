@@ -39,6 +39,7 @@ import { HttpModule } from '@nestjs/axios';
             port: +configService.get('POSTGRES_PORT')
           })
         }
+        console.log("OPTIONS: ", options)
         return options
       },
       inject: [ConfigService],

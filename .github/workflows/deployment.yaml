@@ -58,6 +58,10 @@ jobs:
           region: ${{ env.REGION }}
           metadata: service.yaml
 
+      - name: Add CloudSQL
+        id: cloudsql
+        run: gcloud run services update ${{ env.SERVICE }} --add-cloudsql-instances=${{ secrets.SQL_CONNECTION_NAME }}
+
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
