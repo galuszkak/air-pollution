@@ -6,10 +6,10 @@ on:
       - main
 
 env:
-  PROJECT_ID: YOUR_PROJECT_ID # TODO: update Google Cloud project id
-  GAR_LOCATION: YOUR_GAR_LOCATION # TODO: update Artifact Registry location
-  SERVICE: YOUR_SERVICE_NAME # TODO: update Cloud Run service name
-  REGION: YOUR_SERVICE_REGION # TODO: update Cloud Run service region
+  PROJECT_ID: air-pollution-379411
+  GAR_LOCATION: europe-central2
+  SERVICE: air-pollution
+  REGION: europe-central2
 
 
 jobs:
@@ -26,10 +26,10 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: ' @v0'
+        uses: 'google-github-actions/auth@v0'
         with:
-          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
-          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
 
       - name: Docker Auth
         id: docker-auth
