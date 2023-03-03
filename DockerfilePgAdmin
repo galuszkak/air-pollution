@@ -1,0 +1,6 @@
+FROM dpage/pgadmin4:latest
+USER root
+
+RUN sed -i '939 a \ \ \ \ app.config["WTF_CSRF_ENABLED"] = False' pgadmin/__init__.py
+
+USER pgadmin
