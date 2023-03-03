@@ -10,7 +10,19 @@ services:
       - .:/usr/src/app
     depends_on:
       - database
+    command: npm run start:dev
   database:
     image: "postgres:latest"
     env_file:
       - ./.env_local
+  pgadmin:
+    image: "dpage/pgadmin4:latest"
+    ports:
+      - 8080:80
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - database

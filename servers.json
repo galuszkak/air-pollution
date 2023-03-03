@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Air Pollution PostgreSQL",
+            "Group": "Air Pollution",
+            "Port": 5432,
+            "Username": "newadmin",
+            "Host": "database",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "airpollution"
+        }
+    }
+}
