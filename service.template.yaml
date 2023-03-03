@@ -9,6 +9,7 @@ spec:
         autoscaling.knative.dev/maxScale: '1'
         autoscaling.knative.dev/minScale: '1'
         run.googleapis.com/cpu-throttling: 'false'
+        run.googleapis.com/cloudsql-instances: ${SQL_CONNECTION_NAME}
     spec:
       containerConcurrency: 99
       containers:
