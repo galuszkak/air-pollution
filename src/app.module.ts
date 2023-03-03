@@ -29,6 +29,7 @@ import { HttpModule } from '@nestjs/axios';
         }
         if (configService.get('INSTANCE_UNIX_SOCKET')) {
           options = Object.assign(options, {
+            host: configService.get('INSTANCE_UNIX_SOCKET'),
             extra: {
               socketPath: configService.get('INSTANCE_UNIX_SOCKET')
             }
