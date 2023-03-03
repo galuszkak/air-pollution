@@ -10,7 +10,7 @@ spec:
         autoscaling.knative.dev/minScale: '1'
         run.googleapis.com/cpu-throttling: 'false'
     spec:
-      containerConcurrency: 100
+      containerConcurrency: 99
       containers:
       - image: ${IMAGE}
         env:
