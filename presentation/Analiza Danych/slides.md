@@ -43,7 +43,7 @@ transition: fade-out
 
 Analiza danych to dziedzina, która zajmuje się zbieraniem, przetwarzaniem i interpretacją danych w celu uzyskania wiedzy i zrozumienia zjawisk, które te dane opisują.
 
-- 📝 **Zbieranie danych** - w analizie danych ważnym etapem jest zbieranie danych, które mogą pochodzić z różnych źródeł, takich jak ankiety, badania, rejestracje lub dane uzyskiwane z sensorów.
+- 📝 **Zbieranie danych** - w analizie danych ważnym etapem jest zbieranie danych, które mogą pochodzić z różnych źródeł, takich jak ankiety, badania, trackowanie ruchu w internecie, dane uzyskiwane z sensorów, dane powiązane z naszymi.
 - 🎨 **Wizualizacja danych** - w celu ułatwienia zrozumienia danych stosuje się różne techniki wizualizacji danych, takie jak wykresy, mapy czy grafy.
 - 🧑‍💻 **Analiza statystyczna** - po przetworzeniu danych, stosuje się różne techniki statystyczne w celu identyfikacji wzorców i zależności między różnymi zmiennymi.
 - 🎥 **Przetwarzanie danych** - po zebraniu danych, często wymagane jest ich oczyszczenie, usunięcie błędów oraz przetworzenie ich na odpowiedni format, który pozwoli na dalszą analizę.
@@ -64,11 +64,26 @@ h1 {
 
 
 ---
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
+
+# Datageddon !
+
+---
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
+
+# Dane a prawa !
+
+Do jakich danych mamy dzisiaj prawo?
+
+---
 transition: slide-up
 ---
 
 # Narzędzia? Co wykorzystamy dzisiaj?
-
 
 |                                               |                             |
 | --------------------------------------------- | --------------------------- |
@@ -79,7 +94,6 @@ transition: slide-up
 | <kbd>NestJS</kbd>                             | Web Framework               |
 | <kbd>Docker</kbd>                             | Instalacja narzędzi         |
 | <kbd>Github + Codespaces</kbd>                | Środowisko programistyczne  |
-
 
 ---
 transition: slide-up
@@ -122,7 +136,6 @@ https://public-esa.ose.gov.pl/api/v1/smog
   ]
 }
 ```
-
 
 ---
 transition: slide-up
@@ -320,7 +333,8 @@ image: https://source.unsplash.com/collection/94734566/1920x1080
 2. Wyświetl szkoły z Bielska-Białej których kod pocztowy nie jest 43-300
 3. Wyświetl miasta gdzie jest więcej niz 3 szkoły 
 4. Wyświetl miasta i godzinę gdzie pm2.5 mógł stanowic zagrozenie dla zdrowia i zycia
-5. Wyświetl miasta gdzie jest tylko jedna szkoła i godzinę gdzie pm2.5 mógł stanowic zagrozenie dla zdrowia i zycia
+5. Wyświetl miasta gdzie jest tylko jedna szkoła oraz godzinę gdzie pm2.5 mógł stanowic zagrozenie dla zdrowia i zycia
+6. Wyświetl średnią temperaturę o kazdej godzinie w kazdym miescie i posortuj miastami, godzina.
 
 ---
 
