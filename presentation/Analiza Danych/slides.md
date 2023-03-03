@@ -82,6 +82,117 @@ transition: slide-up
 
 
 ---
+transition: slide-up
+---
+
+# Co budujemy?
+
+Chcemy zanalizowa dane które są dostarczane przez ESA. (Edukacyjna Sieć Antysmogowa)
+<img border="rounded" src="/diagram.png">
+
+---
+transition: slide-up
+---
+
+# Edukacyjna Sieć Antysmogowa API
+
+https://public-esa.ose.gov.pl/api/v1/smog
+
+```json
+{
+  "smog_data": [
+    {
+      "school": {
+        "name": "SZKOŁA PODSTAWOWA IM. JANA PAWŁA II W RACŁAWICACH ŚLĄSKICH",
+        "street": "UL. ZWYCIĘSTWA",
+        "post_code": "48-250",
+        "city": "RACŁAWICE ŚLĄSKIE",
+        "longitude": "17.771528",
+        "latitude": "50.311402"
+      },
+      "data": {
+        "humidity_avg": 97.7,
+        "pressure_avg": 996.875,
+        "temperature_avg": -1.6833333333333333,
+        "pm10_avg": 183.64166666666665,
+        "pm25_avg": 129.51666666666668
+      },
+      "timestamp": "2023-03-03 17:43:23"
+    },
+  ]
+}
+```
+
+
+---
+transition: slide-up
+---
+
+# Tabela w bazie danych
+
+Tabela w PostgreSQL gdzie zrzucamy dane do analizy
+
+```sql
+CREATE TABLE public.school_measurments
+(
+    id integer NOT NULL DEFAULT nextval('school_measurments_id_seq'::regclass),
+    school_name character varying COLLATE pg_catalog."default" NOT NULL,
+    street character varying COLLATE pg_catalog."default" NOT NULL,
+    post_code character varying COLLATE pg_catalog."default" NOT NULL,
+    city character varying COLLATE pg_catalog."default" NOT NULL,
+    longitude double precision NOT NULL,
+    latitude double precision NOT NULL,
+    humidity double precision NOT NULL,
+    pressure double precision NOT NULL,
+    temperature double precision NOT NULL,
+    pm10 double precision NOT NULL,
+    pm25 double precision NOT NULL,
+    date_time_with_timezone timestamp with time zone NOT NULL,
+    "createdDate" timestamp without time zone NOT NULL DEFAULT now(),
+)
+
+```
+---
+
+```ts
+
+@Entity()
+export class SchoolMeasurments {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
+    school_name: string;
+
+    @Column()
+    street: string;
+
+    @Column()
+    post_code: string;
+
+    @Column()
+    city: string;
+
+    @Column('float')
+    longitude: number;
+
+    @Column('float')
+    latitude: number;
+
+    @Column('float')
+    humidity: number;
+
+    @Column('float')
+    pressure: number;
+
+    @Column('float')
+    temperature: number;
+
+    @Column('float')
+    pm10: number;
+```
+
+---
 layout: image-right
 image: https://source.unsplash.com/collection/94734566/1920x1080
 ---
@@ -96,263 +207,128 @@ SELECT
 FROM school_measurments
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
+Co jeśli chcemy tylko pierwsze 100 wierszy?
+```sql
+SELECT 
+  *
+FROM school_measurments
+LIMIT 100
 ```
 
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
+Chcemy tylko zobaczyc jakie szkoly sa w bazie (bez duplikatów)
+```sql
+SELECT 
+  DISTINCT school_name
+FROM school_measurments
 ```
 
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
-
 ---
-class: px-20
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
 ---
 
-# Themes
+# SQL Podstawy
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+Funkcje dostępne w SQLu
 
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
+Ile wierszy jest w tabeli. COUNT
+```sql
+SELECT 
+  count(1)
+FROM school_measurments
 ```
 
-```yaml
----
-theme: seriph
----
+Średnia z całej kolumny AVG
+```sql
+SELECT 
+  AVG(temperature)
+FROM school_measurments
+LIMIT 100
 ```
 
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
+Wyswietl szkoly z Bielska-Białej 
+```sql
+SELECT 
+  DISTINCT school_name
+FROM school_measurments
+WHERE city="BIELSKO-BIAŁA"
 ```
 
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
+---
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
 
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
+# SQL Podstawy
 
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
+Funkcje dostępne w SQLu
 
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
+Ile wierszy jest w tabeli. COUNT
+```sql
+SELECT 
+  count(1)
+FROM school_measurments
+```
 
-[Learn More](https://sli.dev/guide/animations.html#motion)
+Średnia temperatury w całej Polsce z wszystkich odczytów.
+```sql
+SELECT 
+  AVG(temperature)
+FROM school_measurments
+LIMIT 100
+```
 
-</div>
+---
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
+
+# SQL Podstawy
+
+Funkcje dostępne w SQLu
+
+Wyswietl najnizszą temperaturę pomiędzy 1:00 i 2:00 w nocy dzisiaj
+```sql
+SELECT 
+  MIN(temperature)
+FROM school_measurments
+WHERE 
+  date_time_with_timezone 
+  BETWEEN '2023-03-03 00:00:00' and '2023-03-03 01:00:00'
+```
+
+
+Wyswietl najnizszą temperaturę pomiędzy 1:00 i 2:00 w nocy kiedy ciśnienie w danym miejscu było powyzej 1000hpa
+```sql
+SELECT 
+  MIN(temperature)
+FROM school_measurments
+WHERE 
+  date_time_with_timezone 
+  BETWEEN '2023-03-03 00:00:00' and '2023-03-03 01:00:00'
+  AND pressure > 1000
+```
+
+---
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
+
+# SQL zadania
+
+1. Wyświetl 3 miasta które zanotowały najnizszą temperaturę pomiędzy 2 i 3 wnocy
+2. Wyświetl szkoły z Bielska-Białej których kod pocztowy nie jest 43-300
+3. Wyświetl miasta gdzie jest więcej niz 3 szkoły 
+4. Wyświetl miasta i godzinę gdzie pm2.5 mógł stanowic zagrozenie dla zdrowia i zycia
+5. Wyświetl miasta gdzie jest tylko jedna szkoła i godzinę gdzie pm2.5 mógł stanowic zagrozenie dla zdrowia i zycia
 
 ---
 
-# LaTeX
+# Zadania programistyczne web
 
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
+1. Narysuj mapę (uzyj biblioteki [leaflet](https://leafletjs.com/)) pokazującą wszystkie punkty pomiaru i ich ostatnią wartoś PM10
+2. Narysuj wykres zmiany PM2.5 w czasie dla kazdej szkoly (uzyj biblioteki [chart.js](https://www.chartjs.org/docs/latest/samples/line/line.html))
 
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
----
-src: ./pages/multiple-entries.md
-hide: false
 ---
 
 ---
@@ -360,6 +336,6 @@ layout: center
 class: text-center
 ---
 
-# Learn More
+# Dziękuję!
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+## Pytania? 

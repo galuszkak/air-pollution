@@ -39,4 +39,18 @@ export class AirPolutionServiceService {
         const count = await this.measurementsRepository.count()
         this.logger.log("COUNT: " + count)
     }
+
+    async getMaxTemperature() {
+        let data = await this.measurementsRepository
+            .createQueryBuilder()
+            .select("max(temperature)", "maxTem")
+            .getRawOne()
+        console.log(data)
+        let sql = this.measurementsRepository
+            .createQueryBuilder()
+            .select("max(temperature)", "maxTem")
+            .getSql()
+        console.log(sql)
+        return data
+    }
 }
